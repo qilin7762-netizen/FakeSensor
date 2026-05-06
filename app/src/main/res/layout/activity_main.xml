@@ -140,14 +140,30 @@
 
         <include layout="@layout/sensor_step" />
 
-        <!-- 开始模拟按钮 -->
-        <Button
-            android:id="@+id/btn_start"
+        <!-- 静态/动态模拟按钮 -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/btn_start"
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/btn_static"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="@string/btn_static"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/btn_dynamic"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/btn_dynamic"
+                android:textSize="15sp" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

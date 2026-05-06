@@ -4,7 +4,7 @@
     <!-- MainActivity -->
     <string name="title_config">FakeSensor 配置</string>
     <string name="hint_lsposed">请在 LSPosed 管理器中启用本模块后使用</string>
-    <string name="hint_select_sensors">勾选要模拟的传感器，点击开始进入随机值模拟</string>
+    <string name="hint_select_sensors">勾选要模拟的传感器，点击静态模拟应用固定值或动态模拟进入随机值模式</string>
     <string name="section_accelerometer">▎加速度</string>
     <string name="section_gyroscope">▎陀螺仪</string>
     <string name="section_magnetic">▎磁力计</string>
@@ -13,7 +13,9 @@
     <string name="section_rotation">▎旋转向量</string>
     <string name="section_others">▎其他传感器</string>
     <string name="section_step">▎步数</string>
-    <string name="btn_start">开始模拟</string>
+    <string name="btn_static">静态模拟</string>
+    <string name="btn_dynamic">动态模拟</string>
+    <string name="toast_static_saved">静态配置已保存</string>
     <string name="lang_switch">EN</string>
 
     <!-- SimulationActivity -->

@@ -5,7 +5,7 @@
     <!-- MainActivity -->
     <string name="title_config">FakeSensor Config</string>
     <string name="hint_lsposed">Enable this module in LSPosed Manager before use</string>
-    <string name="hint_select_sensors">Select sensors to fake, then tap Start to enter simulation</string>
+    <string name="hint_select_sensors">Select sensors, tap Static for fixed values or Dynamic for live simulation</string>
     <string name="section_accelerometer">▎Accelerometer</string>
     <string name="section_gyroscope">▎Gyroscope</string>
     <string name="section_magnetic">▎Magnetic Field</string>
@@ -14,7 +14,9 @@
     <string name="section_rotation">▎Rotation Vector</string>
     <string name="section_others">▎Other Sensors</string>
     <string name="section_step">▎Step</string>
-    <string name="btn_start">Start Simulation</string>
+    <string name="btn_static">Static</string>
+    <string name="btn_dynamic">Dynamic</string>
+    <string name="toast_static_saved">Static config saved</string>
     <string name="lang_switch">中</string>
 
     <!-- SimulationActivity -->
