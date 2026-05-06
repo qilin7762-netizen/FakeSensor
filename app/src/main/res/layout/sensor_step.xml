@@ -15,7 +15,7 @@
             android:id="@+id/cb_step_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="计步器 (TYPE_STEP_COUNTER)"
+            android:text="@string/sensor_step_counter"
             android:textSize="13sp"
             android:tag="19" />
     </LinearLayout>
@@ -31,7 +31,7 @@
             android:id="@+id/cb_step_detector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="步数检测 (TYPE_STEP_DETECTOR)"
+            android:text="@string/sensor_step_detector"
             android:textSize="13sp"
             android:tag="18" />
     </LinearLayout>

@@ -1,5 +1,6 @@
 package com.app.fakesensor;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +19,7 @@ import java.util.Random;
 public class SimulationActivity extends AppCompatActivity {
 
     private String types;
-    private String scenario = "walking"; // 默认步行
+    private String scenario = "walking";
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final Random random = new Random();
     private long stepCount;
@@ -32,6 +33,11 @@ public class SimulationActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleHelper.attachBaseContext(base));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simulation);
@@ -39,8 +45,9 @@ public class SimulationActivity extends AppCompatActivity {
         types = getIntent().getStringExtra("types");
         if (types == null || types.isEmpty()) { finish(); return; }
 
-        setTitle("模拟中");
-        ((TextView) findViewById(R.id.tv_types)).setText("传感器: " + types);
+        setTitle(getString(R.string.title_simulating));
+        ((TextView) findViewById(R.id.tv_types)).setText(
+                getString(R.string.label_selected_sensors, types));
 
         setupScenarios();
         setupDisplay();
@@ -59,6 +66,8 @@ public class SimulationActivity extends AppCompatActivity {
     private void setupScenarios() {
         int[] btnIds = {R.id.btn_stationary, R.id.btn_walking, R.id.btn_running, R.id.btn_cycling};
         String[] keys = {"stationary", "walking", "running", "cycling"};
+        int[] nameIds = {R.string.scenario_stationary, R.string.scenario_walking,
+                R.string.scenario_running, R.string.scenario_cycling};
         for (int i = 0; i < btnIds.length; i++) {
             final String s = keys[i];
             final int bid = btnIds[i];
@@ -67,13 +76,14 @@ public class SimulationActivity extends AppCompatActivity {
                 scenario = s;
                 resetStepCount();
                 saveConfig();
-                ((TextView) findViewById(R.id.tv_scenario)).setText("当前: " + getScenarioName(s));
+                ((TextView) findViewById(R.id.tv_scenario)).setText(
+                        getString(R.string.current_scenario, getScenarioName(s)));
                 highlightButton(bid);
             });
         }
-        // 默认选中步行
         scenario = "walking";
-        ((TextView) findViewById(R.id.tv_scenario)).setText("当前: 步行");
+        ((TextView) findViewById(R.id.tv_scenario)).setText(
+                getString(R.string.current_scenario, getScenarioName(scenario)));
         saveConfig();
     }
 
@@ -88,10 +98,10 @@ public class SimulationActivity extends AppCompatActivity {
 
     private String getScenarioName(String s) {
         switch (s) {
-            case "stationary": return "静止";
-            case "walking": return "步行";
-            case "running": return "跑步";
-            case "cycling": return "骑行";
+            case "stationary": return getString(R.string.scenario_stationary);
+            case "walking": return getString(R.string.scenario_walking);
+            case "running": return getString(R.string.scenario_running);
+            case "cycling": return getString(R.string.scenario_cycling);
             default: return s;
         }
     }
@@ -240,20 +250,20 @@ public class SimulationActivity extends AppCompatActivity {
 
     private String sensorName(int type) {
         switch (type) {
-            case 1: return "加速度计";
-            case 2: return "磁力计";
-            case 4: return "陀螺仪";
-            case 5: return "光线";
-            case 6: return "气压";
-            case 8: return "距离";
-            case 9: return "重力";
-            case 10: return "线性加速度";
-            case 11: return "旋转向量";
-            case 12: return "湿度";
-            case 13: return "温度";
-            case 18: return "步数检测";
-            case 19: return "计步器";
-            default: return "传感器 " + type;
+            case 1: return getString(R.string.sensor_short_accelerometer);
+            case 2: return getString(R.string.sensor_short_magnetic);
+            case 4: return getString(R.string.sensor_short_gyroscope);
+            case 5: return getString(R.string.sensor_short_light);
+            case 6: return getString(R.string.sensor_short_pressure);
+            case 8: return getString(R.string.sensor_short_proximity);
+            case 9: return getString(R.string.sensor_short_gravity);
+            case 10: return getString(R.string.sensor_short_linear_acceleration);
+            case 11: return getString(R.string.sensor_short_rotation);
+            case 12: return getString(R.string.sensor_short_humidity);
+            case 13: return getString(R.string.sensor_short_temperature);
+            case 18: return getString(R.string.sensor_short_step_detector);
+            case 19: return getString(R.string.sensor_short_step_counter);
+            default: return getString(R.string.sensor_unknown, type);
         }
     }
 

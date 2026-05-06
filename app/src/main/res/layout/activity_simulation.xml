@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="实时模拟值"
+            android:text="@string/label_realtime_values"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
             android:id="@+id/btn_stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="停止"
+            android:text="@string/btn_stop"
             android:textColor="#F44336" />
     </LinearLayout>
 
@@ -32,7 +32,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="预设场景："
+        android:text="@string/label_scenario_presets"
         android:textSize="13sp"
         android:textColor="#555" />
 
@@ -49,7 +49,7 @@
             android:layout_height="36dp"
             android:layout_weight="1"
             android:layout_marginEnd="4dp"
-            android:text="静止"
+            android:text="@string/scenario_stationary"
             android:textSize="12sp" />
 
         <Button
@@ -58,7 +58,7 @@
             android:layout_height="36dp"
             android:layout_weight="1"
             android:layout_marginHorizontal="2dp"
-            android:text="步行"
+            android:text="@string/scenario_walking"
             android:textSize="12sp" />
 
         <Button
@@ -67,7 +67,7 @@
             android:layout_height="36dp"
             android:layout_weight="1"
             android:layout_marginHorizontal="2dp"
-            android:text="跑步"
+            android:text="@string/scenario_running"
             android:textSize="12sp" />
 
         <Button
@@ -76,7 +76,7 @@
             android:layout_height="36dp"
             android:layout_weight="1"
             android:layout_marginStart="4dp"
-            android:text="骑行"
+            android:text="@string/scenario_cycling"
             android:textSize="12sp" />
     </LinearLayout>
 

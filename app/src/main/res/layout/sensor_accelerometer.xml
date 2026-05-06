@@ -9,7 +9,7 @@
         android:id="@+id/cb_accel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="加速度计 (TYPE_ACCELEROMETER)"
+        android:text="@string/sensor_accelerometer"
         android:textSize="13sp"
         android:tag="1" />
 

@@ -9,7 +9,7 @@
         android:id="@+id/cb_mag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="磁力计 (TYPE_MAGNETIC_FIELD)"
+        android:text="@string/sensor_magnetic"
         android:textSize="13sp"
         android:tag="2" />
 

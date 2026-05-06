@@ -16,7 +16,7 @@
             android:id="@+id/cb_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="光线 (TYPE_LIGHT)"
+            android:text="@string/sensor_light"
             android:textSize="13sp"
             android:tag="5" />
 
@@ -43,7 +43,7 @@
             android:id="@+id/cb_proximity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="距离 (TYPE_PROXIMITY)"
+            android:text="@string/sensor_proximity"
             android:textSize="13sp"
             android:tag="8" />
 
@@ -70,7 +70,7 @@
             android:id="@+id/cb_pressure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="气压 (TYPE_PRESSURE)"
+            android:text="@string/sensor_pressure"
             android:textSize="13sp"
             android:tag="6" />
 
@@ -97,7 +97,7 @@
             android:id="@+id/cb_humidity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="湿度 (TYPE_RELATIVE_HUMIDITY)"
+            android:text="@string/sensor_humidity"
             android:textSize="13sp"
             android:tag="12" />
 
@@ -124,7 +124,7 @@
             android:id="@+id/cb_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="温度 (TYPE_AMBIENT_TEMPERATURE)"
+            android:text="@string/sensor_temperature"
             android:textSize="13sp"
             android:tag="13" />
 

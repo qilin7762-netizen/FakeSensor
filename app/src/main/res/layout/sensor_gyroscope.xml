@@ -9,7 +9,7 @@
         android:id="@+id/cb_gyro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="陀螺仪 (TYPE_GYROSCOPE)"
+        android:text="@string/sensor_gyroscope"
         android:textSize="13sp"
         android:tag="4" />
 

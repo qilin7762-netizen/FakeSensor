@@ -1,5 +1,6 @@
 package com.app.fakesensor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -17,9 +18,21 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleHelper.attachBaseContext(base));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button btnLang = findViewById(R.id.btn_lang);
+        btnLang.setText(LocaleHelper.getDisplayLabel(this));
+        btnLang.setOnClickListener(v -> {
+            LocaleHelper.toggleLanguage(this);
+            recreate();
+        });
 
         Button btnStart = findViewById(R.id.btn_start);
         btnStart.setOnClickListener(v -> {
@@ -32,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (types.length() == 0) {
-                android.widget.Toast.makeText(this, "请至少勾选一个传感器", android.widget.Toast.LENGTH_SHORT).show();
+                android.widget.Toast.makeText(this,
+                        getString(R.string.toast_select_sensor),
+                        android.widget.Toast.LENGTH_SHORT).show();
                 return;
             }
 

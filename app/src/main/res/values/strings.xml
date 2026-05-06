@@ -1,6 +1,80 @@
 <resources>
-    <string name="app_name">fakesensor</string>
+    <string name="app_name">FakeSensor</string>
+
+    <!-- MainActivity -->
+    <string name="title_config">FakeSensor 配置</string>
+    <string name="hint_lsposed">请在 LSPosed 管理器中启用本模块后使用</string>
+    <string name="hint_select_sensors">勾选要模拟的传感器，点击开始进入随机值模拟</string>
+    <string name="section_accelerometer">▎加速度</string>
+    <string name="section_gyroscope">▎陀螺仪</string>
+    <string name="section_magnetic">▎磁力计</string>
+    <string name="section_gravity">▎重力</string>
+    <string name="section_linear_accel">▎线性加速度</string>
+    <string name="section_rotation">▎旋转向量</string>
+    <string name="section_others">▎其他传感器</string>
+    <string name="section_step">▎步数</string>
+    <string name="btn_start">开始模拟</string>
+    <string name="lang_switch">EN</string>
+
+    <!-- SimulationActivity -->
+    <string name="title_simulating">模拟中</string>
+    <string name="label_realtime_values">实时模拟值</string>
+    <string name="btn_stop">停止</string>
+    <string name="label_scenario_presets">预设场景：</string>
+    <string name="current_scenario">当前: %s</string>
+    <string name="label_selected_sensors">传感器: %s</string>
+
+    <!-- Scenarios -->
+    <string name="scenario_stationary">静止</string>
+    <string name="scenario_walking">步行</string>
+    <string name="scenario_running">跑步</string>
+    <string name="scenario_cycling">骑行</string>
+
+    <!-- Sensor names (checkbox labels) -->
+    <string name="sensor_accelerometer">加速度计 (TYPE_ACCELEROMETER)</string>
+    <string name="sensor_gyroscope">陀螺仪 (TYPE_GYROSCOPE)</string>
+    <string name="sensor_magnetic">磁力计 (TYPE_MAGNETIC_FIELD)</string>
+    <string name="sensor_gravity">重力计 (TYPE_GRAVITY)</string>
+    <string name="sensor_linear_acceleration">线性加速度 (TYPE_LINEAR_ACCELERATION)</string>
+    <string name="sensor_rotation">旋转向量 (TYPE_ROTATION_VECTOR)</string>
+    <string name="sensor_light">光线 (TYPE_LIGHT)</string>
+    <string name="sensor_proximity">距离 (TYPE_PROXIMITY)</string>
+    <string name="sensor_pressure">气压 (TYPE_PRESSURE)</string>
+    <string name="sensor_humidity">湿度 (TYPE_RELATIVE_HUMIDITY)</string>
+    <string name="sensor_temperature">温度 (TYPE_AMBIENT_TEMPERATURE)</string>
+    <string name="sensor_step_counter">计步器 (TYPE_STEP_COUNTER)</string>
+    <string name="sensor_step_detector">步数检测 (TYPE_STEP_DETECTOR)</string>
+
+    <!-- Short sensor names (for SimulationActivity display) -->
+    <string name="sensor_short_accelerometer">加速度计</string>
+    <string name="sensor_short_gyroscope">陀螺仪</string>
+    <string name="sensor_short_magnetic">磁力计</string>
+    <string name="sensor_short_gravity">重力</string>
+    <string name="sensor_short_linear_acceleration">线性加速度</string>
+    <string name="sensor_short_rotation">旋转向量</string>
+    <string name="sensor_short_light">光线</string>
+    <string name="sensor_short_proximity">距离</string>
+    <string name="sensor_short_pressure">气压</string>
+    <string name="sensor_short_humidity">湿度</string>
+    <string name="sensor_short_temperature">温度</string>
+    <string name="sensor_short_step_counter">计步器</string>
+    <string name="sensor_short_step_detector">步数检测</string>
+    <string name="sensor_unknown">传感器 %d</string>
+
+    <!-- Toasts -->
+    <string name="toast_select_sensor">请至少勾选一个传感器</string>
+
+    <!-- Hints -->
     <string name="hint_value_x">X</string>
     <string name="hint_value_y">Y</string>
     <string name="hint_value_z">Z</string>
+    <string name="hint_lux">lux</string>
+    <string name="hint_cm">cm</string>
+    <string name="hint_hpa">hPa</string>
+    <string name="hint_percent">%</string>
+    <string name="hint_celsius">°C</string>
+    <string name="hint_x_sin">X*sin</string>
+    <string name="hint_y_sin">Y*sin</string>
+    <string name="hint_z_sin">Z*sin</string>
+    <string name="hint_scalar">scalar</string>
 </resources>

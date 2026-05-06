@@ -9,7 +9,7 @@
         android:id="@+id/cb_linear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="线性加速度 (TYPE_LINEAR_ACCELERATION)"
+        android:text="@string/sensor_linear_acceleration"
         android:textSize="13sp"
         android:tag="10" />
 
