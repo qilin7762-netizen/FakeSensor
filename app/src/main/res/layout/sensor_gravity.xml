@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <CheckBox
+        android:id="@+id/cb_gravity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重力计 (TYPE_GRAVITY)"
+        android:textSize="13sp"
+        android:tag="9" />
+
+    <EditText
+        android:id="@+id/et_gravity_x"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="1"
+        android:hint="X"
+        android:text="0"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="12sp"
+        android:paddingHorizontal="6dp" />
+
+    <EditText
+        android:id="@+id/et_gravity_y"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="1"
+        android:hint="Y"
+        android:text="0"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="12sp"
+        android:paddingHorizontal="6dp" />
+
+    <EditText
+        android:id="@+id/et_gravity_z"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="1"
+        android:hint="Z"
+        android:text="9.8"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="12sp"
+        android:paddingHorizontal="6dp" />
+</LinearLayout>

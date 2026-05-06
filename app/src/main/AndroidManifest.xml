@@ -11,6 +11,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Fakesensor">
+
+        <meta-data
+            android:name="xposedmodule"
+            android:value="true" />
+        <meta-data
+            android:name="xposeddescription"
+            android:value="全局传感器伪造模块，可自定义加速度、陀螺仪、磁力计等传感器数据" />
+        <meta-data
+            android:name="xposedminversion"
+            android:value="82" />
+        <provider
+            android:name=".ConfigProvider"
+            android:authorities="com.app.fakesensor.config"
+            android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -20,6 +35,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".SimulationActivity"
+            android:exported="false"
+            android:label="模拟中" />
     </application>
 
 </manifest>

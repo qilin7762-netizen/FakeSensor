@@ -4,11 +4,7 @@ plugins {
 
 android {
     namespace 'com.app.fakesensor'
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.app.fakesensor"
@@ -33,6 +29,7 @@ android {
 }
 
 dependencies {
+    compileOnly files('libs/XposedBridgeAPI-82.jar')
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity

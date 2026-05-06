@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="4dp">
+
+        <CheckBox
+            android:id="@+id/cb_step_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="计步器 (TYPE_STEP_COUNTER)"
+            android:textSize="13sp"
+            android:tag="19" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="4dp">
+
+        <CheckBox
+            android:id="@+id/cb_step_detector"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="步数检测 (TYPE_STEP_DETECTOR)"
+            android:textSize="13sp"
+            android:tag="18" />
+    </LinearLayout>
+</LinearLayout>

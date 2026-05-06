@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!-- 光线 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="4dp">
+
+        <CheckBox
+            android:id="@+id/cb_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="光线 (TYPE_LIGHT)"
+            android:textSize="13sp"
+            android:tag="5" />
+
+        <EditText
+            android:id="@+id/et_light"
+            android:layout_width="120dp"
+            android:layout_height="36dp"
+            android:hint="lux"
+            android:text="300"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="12sp"
+            android:paddingHorizontal="6dp" />
+    </LinearLayout>
+
+    <!-- 距离 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="4dp">
+
+        <CheckBox
+            android:id="@+id/cb_proximity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="距离 (TYPE_PROXIMITY)"
+            android:textSize="13sp"
+            android:tag="8" />
+
+        <EditText
+            android:id="@+id/et_proximity"
+            android:layout_width="120dp"
+            android:layout_height="36dp"
+            android:hint="cm"
+            android:text="0"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="12sp"
+            android:paddingHorizontal="6dp" />
+    </LinearLayout>
+
+    <!-- 气压 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="4dp">
+
+        <CheckBox
+            android:id="@+id/cb_pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="气压 (TYPE_PRESSURE)"
+            android:textSize="13sp"
+            android:tag="6" />
+
+        <EditText
+            android:id="@+id/et_pressure"
+            android:layout_width="120dp"
+            android:layout_height="36dp"
+            android:hint="hPa"
+            android:text="1013.25"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="12sp"
+            android:paddingHorizontal="6dp" />
+    </LinearLayout>
+
+    <!-- 湿度 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="4dp">
+
+        <CheckBox
+            android:id="@+id/cb_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="湿度 (TYPE_RELATIVE_HUMIDITY)"
+            android:textSize="13sp"
+            android:tag="12" />
+
+        <EditText
+            android:id="@+id/et_humidity"
+            android:layout_width="120dp"
+            android:layout_height="36dp"
+            android:hint="%"
+            android:text="50"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="12sp"
+            android:paddingHorizontal="6dp" />
+    </LinearLayout>
+
+    <!-- 温度 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="4dp">
+
+        <CheckBox
+            android:id="@+id/cb_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="温度 (TYPE_AMBIENT_TEMPERATURE)"
+            android:textSize="13sp"
+            android:tag="13" />
+
+        <EditText
+            android:id="@+id/et_temperature"
+            android:layout_width="120dp"
+            android:layout_height="36dp"
+            android:hint="°C"
+            android:text="25"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="12sp"
+            android:paddingHorizontal="6dp" />
+    </LinearLayout>
+</LinearLayout>

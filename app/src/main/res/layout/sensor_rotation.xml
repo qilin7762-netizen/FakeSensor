@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <CheckBox
+        android:id="@+id/cb_rotation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="旋转向量 (TYPE_ROTATION_VECTOR)"
+        android:textSize="13sp"
+        android:tag="11" />
+
+    <EditText
+        android:id="@+id/et_rot_x"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="1"
+        android:hint="X*sin"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="12sp"
+        android:paddingHorizontal="6dp" />
+
+    <EditText
+        android:id="@+id/et_rot_y"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="1"
+        android:hint="Y*sin"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="12sp"
+        android:paddingHorizontal="6dp" />
+
+    <EditText
+        android:id="@+id/et_rot_z"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="1"
+        android:hint="Z*sin"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="12sp"
+        android:paddingHorizontal="6dp" />
+
+    <EditText
+        android:id="@+id/et_rot_scalar"
+        android:layout_width="0dp"
+        android:layout_height="36dp"
+        android:layout_weight="1"
+        android:hint="scalar"
+        android:inputType="numberDecimal|numberSigned"
+        android:textSize="12sp"
+        android:paddingHorizontal="6dp" />
+</LinearLayout>
