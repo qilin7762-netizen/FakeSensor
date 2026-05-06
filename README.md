@@ -4,21 +4,22 @@
 
 通过 hook `SystemSensorManager.registerListenerImpl` 和 `unregisterListenerImpl`，在 Zygote 阶段注入代理 `SensorEventListener`，拦截并替换目标 App 的传感器数据。
 
-## 使用说明
-
-### 前提条件
+## 前提条件
 
 - 设备已 Root 并安装 LSPosed 框架
 - 本模块在 LSPosed 管理器中激活
 - 在 LSPosed 作用域中勾选需要伪造传感器的目标 App
-- 目前资源有限，仅在MIUI 13(Android 12)一台设备上生效并模拟成功
-### 基本流程
+- 目前资源有限，仅在 MIUI 13(Android 12) 一台设备上生效并模拟成功
+
+## 基本流程
 
 1. 安装模块并重启
 2. 打开 LSPosed 管理器，启用本模块，勾选目标 App（必选系统框架）
 3. 打开 FakeSensor App
 4. 勾选需要伪造的传感器（至少一个）
 5. 点击 **静态模拟** 或 **动态模拟**
+
+## 使用说明
 
 ### 静态模拟
 
@@ -66,6 +67,13 @@ enabled=true|simulate=true|scenario=walking|types=1,4,9|accel_x=0.0|accel_y=0.0|
 | `scenario` | String | `stationary` / `walking` / `running` / `cycling` |
 | `types` | String | 逗号分隔的传感器类型码 |
 | `accel_x` / `accel_y` / `accel_z` | float | 传感器各轴固定值（非模拟模式下生效） |
+
+## 📋 免责声明 & 已知限制
+
+- ⚠️ **本模块仅在 LSPosed 中激活后才能生效**，单独启动 App 无作用
+- ⚠️ **仅在 MIUI 13 (Android 12) 测试过**，其他版本兼容性未知，欢迎反馈
+- ⚠️ **仅供测试开发使用**，不得用于欺骗或违规用途
+- 📱 **其他 Android 版本和设备的兼容性反馈** 欢迎在 Issue 中提交
 
 ## 工作原理
 
