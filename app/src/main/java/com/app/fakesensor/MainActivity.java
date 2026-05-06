@@ -147,17 +147,17 @@ public class MainActivity extends AppCompatActivity {
         }
         editor.apply();
 
-        // 写配置文件到 /data/local/tmp/
+        StringBuilder sb = new StringBuilder();
+        sb.append("enabled=true|simulate=false|scenario=walking|types=").append(types);
+        for (Map.Entry<String, Float> e : values.entrySet()) {
+            sb.append("|").append(e.getKey()).append("=").append(e.getValue());
+        }
+        String content = sb.toString();
         try {
-            StringBuilder sb = new StringBuilder();
-            sb.append("enabled=true|simulate=false|scenario=walking|types=").append(types);
-            for (Map.Entry<String, Float> e : values.entrySet()) {
-                sb.append("|").append(e.getKey()).append("=").append(e.getValue());
-            }
             Process p = Runtime.getRuntime().exec(
                 new String[]{"su", "-c", "cat > /data/local/tmp/fake_sensor_config.txt"});
             OutputStream os = p.getOutputStream();
-            os.write(sb.toString().getBytes("UTF-8"));
+            os.write(content.getBytes("UTF-8"));
             os.close();
             p.waitFor();
         } catch (Exception ignored) {}

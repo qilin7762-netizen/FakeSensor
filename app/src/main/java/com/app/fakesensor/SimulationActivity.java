@@ -278,23 +278,26 @@ public class SimulationActivity extends AppCompatActivity {
             .putString("fake_types", types)
             .apply();
 
+        String content = "enabled=true|simulate=true|scenario=" + scenario + "|types=" + types;
+        writeConfigViaSu(content);
+    }
+
+    private void deleteConfig() {
+        getSharedPreferences("fake_sensor_config", MODE_PRIVATE).edit()
+            .putBoolean("enabled", false).putBoolean("simulate", false).apply();
+
+        // 覆写为禁用配置而非 rm，确保 su 不可用时的旧文件也被覆盖
+        writeConfigViaSu("enabled=false|simulate=false|scenario=walking|types=");
+    }
+
+    private void writeConfigViaSu(String content) {
         try {
-            String content = "enabled=true|simulate=true|scenario=" + scenario + "|types=" + types;
             Process p = Runtime.getRuntime().exec(
                 new String[]{"su", "-c", "cat > /data/local/tmp/fake_sensor_config.txt"});
             OutputStream os = p.getOutputStream();
             os.write(content.getBytes("UTF-8"));
             os.close();
             p.waitFor();
-        } catch (Exception ignored) {}
-    }
-
-    private void deleteConfig() {
-        getSharedPreferences("fake_sensor_config", MODE_PRIVATE).edit()
-            .putBoolean("enabled", false).putBoolean("simulate", false).apply();
-        try {
-            Runtime.getRuntime().exec(
-                new String[]{"su", "-c", "rm -f /data/local/tmp/fake_sensor_config.txt"}).waitFor();
         } catch (Exception ignored) {}
     }
 }
