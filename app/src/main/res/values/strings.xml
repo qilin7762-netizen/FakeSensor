@@ -19,7 +19,8 @@
     <string name="lang_switch">EN</string>
 
     <!-- SimulationActivity -->
-    <string name="title_simulating">模拟中</string>
+    <string name="title_simulating">动态模拟中</string>
+    <string name="title_static_simulating">静态模拟中</string>
     <string name="label_realtime_values">实时模拟值</string>
     <string name="btn_stop">停止</string>
     <string name="label_scenario_presets">预设场景：</string>

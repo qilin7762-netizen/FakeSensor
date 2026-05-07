@@ -29,6 +29,12 @@
     </LinearLayout>
 
     <!-- 场景预设 -->
+    <View
+        android:id="@+id/separator_dynamic"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EEE"
+        android:layout_marginBottom="8dp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

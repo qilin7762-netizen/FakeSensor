@@ -8,12 +8,15 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.OutputStream;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 public class SimulationActivity extends AppCompatActivity {
@@ -24,6 +27,11 @@ public class SimulationActivity extends AppCompatActivity {
     private final Random random = new Random();
     private long stepCount;
     private boolean lastStepDetected;
+
+    private boolean isStatic;
+    private final Map<String, Float> staticValues = new LinkedHashMap<>();
+    private final Map<String, SeekBar> seekBars = new LinkedHashMap<>();
+    private final Map<String, float[]> sensorRanges = new LinkedHashMap<>();
 
     private final Runnable tick = new Runnable() {
         @Override public void run() {
@@ -45,12 +53,30 @@ public class SimulationActivity extends AppCompatActivity {
         types = getIntent().getStringExtra("types");
         if (types == null || types.isEmpty()) { finish(); return; }
 
-        setTitle(getString(R.string.title_simulating));
+        isStatic = getIntent().getBooleanExtra("is_static", false);
+
+        // 读取静态模式的初始值
+        if (isStatic) {
+            for (String t : types.split(",")) {
+                int type = Integer.parseInt(t.trim());
+                for (String key : getKeysForType(type)) {
+                    if (getIntent().hasExtra(key)) {
+                        staticValues.put(key, getIntent().getFloatExtra(key, 0f));
+                    }
+                }
+            }
+        }
+
+        setTitle(getString(isStatic ? R.string.title_static_simulating : R.string.title_simulating));
         ((TextView) findViewById(R.id.tv_types)).setText(
                 getString(R.string.label_selected_sensors, types));
 
-        setupScenarios();
-        setupDisplay();
+        if (isStatic) {
+            setupStaticUI();
+        } else {
+            setupDynamicUI();
+        }
+
         resetStepCount();
 
         findViewById(R.id.btn_stop).setOnClickListener(v -> {
@@ -58,6 +84,165 @@ public class SimulationActivity extends AppCompatActivity {
             deleteConfig();
             finish();
         });
+    }
+
+    private void setupDynamicUI() {
+        findViewById(R.id.scenario_buttons).setVisibility(View.VISIBLE);
+        findViewById(R.id.tv_scenario).setVisibility(View.VISIBLE);
+        findViewById(R.id.separator_dynamic).setVisibility(View.VISIBLE);
+
+        setupScenarios();
+        setupDisplay();
+    }
+
+    private void setupStaticUI() {
+        findViewById(R.id.scenario_buttons).setVisibility(View.GONE);
+        findViewById(R.id.tv_scenario).setVisibility(View.GONE);
+        findViewById(R.id.separator_dynamic).setVisibility(View.GONE);
+
+        LinearLayout container = findViewById(R.id.values_container);
+
+        for (String t : types.split(",")) {
+            int type = Integer.parseInt(t.trim());
+            String[] keys = getKeysForType(type);
+
+            TextView title = new TextView(this);
+            title.setText(sensorName(type));
+            title.setTextSize(14);
+            title.setPadding(0, 16, 0, 4);
+            title.setTextColor(0xFF2196F3);
+            container.addView(title);
+
+            for (String key : keys) {
+                LinearLayout row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                row.setPadding(0, 4, 0, 4);
+
+                TextView label = new TextView(this);
+                label.setText(getAxisLabel(key));
+                label.setTextSize(13);
+                label.setMinWidth(60);
+
+                SeekBar seekBar = new SeekBar(this);
+                seekBar.setMax(1000);
+                float initVal = staticValues.containsKey(key) ? staticValues.get(key) : getDefaultValue(key);
+                float range = getRangeForKey(key);
+                seekBar.setProgress((int) ((initVal + range) / (2 * range) * 1000));
+                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        float value = (progress / 1000f) * 2 * range - range;
+                        staticValues.put(key, value);
+                        updateSliderValueLabel(row, value);
+                        saveStaticConfig();
+                    }
+                    @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+                    @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+                });
+                seekBars.put(key, seekBar);
+
+                TextView valueLabel = new TextView(this);
+                valueLabel.setText(String.format(Locale.US, "%.2f", initVal));
+                valueLabel.setTextSize(13);
+                valueLabel.setMinWidth(80);
+
+                row.addView(label);
+                row.addView(seekBar, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+                row.addView(valueLabel);
+                container.addView(row);
+            }
+        }
+    }
+
+    private void updateSliderValueLabel(LinearLayout row, float value) {
+        TextView valueLabel = (TextView) row.getChildAt(2);
+        if (valueLabel != null) {
+            valueLabel.setText(String.format(Locale.US, "%.2f", value));
+        }
+    }
+
+    private void saveStaticConfig() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("enabled=true|simulate=false|scenario=walking|types=").append(types);
+        for (Map.Entry<String, Float> e : staticValues.entrySet()) {
+            sb.append("|").append(e.getKey()).append("=").append(e.getValue());
+        }
+        String content = sb.toString();
+        try {
+            SharedPreferences prefs = getSharedPreferences("fake_sensor_config", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit()
+                .putBoolean("enabled", true)
+                .putBoolean("simulate", false)
+                .putString("fake_types", types);
+            for (Map.Entry<String, Float> e : staticValues.entrySet()) {
+                editor.putFloat(e.getKey(), e.getValue());
+            }
+            editor.apply();
+
+            Process p = Runtime.getRuntime().exec(
+                new String[]{"su", "-c", "cat > /data/local/tmp/fake_sensor_config.txt"});
+            OutputStream os = p.getOutputStream();
+            os.write(content.getBytes("UTF-8"));
+            os.close();
+            p.waitFor();
+        } catch (Exception ignored) {}
+    }
+
+    private String[] getKeysForType(int type) {
+        switch (type) {
+            case 1: return new String[]{"accel_x", "accel_y", "accel_z"};
+            case 4: return new String[]{"gyro_x", "gyro_y", "gyro_z"};
+            case 2: return new String[]{"mag_x", "mag_y", "mag_z"};
+            case 9: return new String[]{"gravity_x", "gravity_y", "gravity_z"};
+            case 10: return new String[]{"linear_accel_x", "linear_accel_y", "linear_accel_z"};
+            case 5: return new String[]{"light"};
+            case 8: return new String[]{"proximity"};
+            case 6: return new String[]{"pressure"};
+            case 12: return new String[]{"humidity"};
+            case 13: return new String[]{"temperature"};
+            default: return new String[]{};
+        }
+    }
+
+    private String getAxisLabel(String key) {
+        if (key.endsWith("_x")) return "X";
+        if (key.endsWith("_y")) return "Y";
+        if (key.endsWith("_z")) return "Z";
+        return "";
+    }
+
+    private float getRangeForKey(String key) {
+        switch (key) {
+            case "accel_x": case "accel_y": case "accel_z":
+            case "gravity_x": case "gravity_y": case "gravity_z":
+            case "linear_accel_x": case "linear_accel_y": case "linear_accel_z":
+                return 20f;
+            case "gyro_x": case "gyro_y": case "gyro_z":
+                return 10f;
+            case "mag_x": case "mag_y": case "mag_z":
+                return 100f;
+            case "light": return 10000f;
+            case "proximity": return 10f;
+            case "pressure": return 200f;
+            case "humidity": return 100f;
+            case "temperature": return 50f;
+            default: return 100f;
+        }
+    }
+
+    private float getDefaultValue(String key) {
+        switch (key) {
+            case "accel_z": return 9.8f;
+            case "mag_x": return 25f;
+            case "mag_y": return -25f;
+            case "mag_z": return -45f;
+            case "light": return 300f;
+            case "proximity": return 0f;
+            case "pressure": return 1013.25f;
+            case "humidity": return 50f;
+            case "temperature": return 25f;
+            default: return 0f;
+        }
     }
 
     @Override protected void onResume() { super.onResume(); handler.post(tick); }
@@ -127,6 +312,49 @@ public class SimulationActivity extends AppCompatActivity {
     }
 
     private void updateDisplay() {
+        if (isStatic) {
+            updateStaticDisplay();
+        } else {
+            updateDynamicDisplay();
+        }
+    }
+
+    private void updateStaticDisplay() {
+        LinearLayout container = findViewById(R.id.values_container);
+        int idx = 0;
+        for (String t : types.split(",")) {
+            int type = Integer.parseInt(t.trim());
+            float[] vals = getStaticValues(type);
+            int valIdx = idx * 2 + 1;
+            if (valIdx < container.getChildCount()) {
+                TextView tv = (TextView) container.getChildAt(valIdx);
+                if (tv != null) tv.setText(formatValues(vals));
+            }
+            idx++;
+        }
+    }
+
+    private float[] getStaticValues(int type) {
+        switch (type) {
+            case 1: return v3(g("accel_x"), g("accel_y"), g("accel_z"));
+            case 4: return v3(g("gyro_x"), g("gyro_y"), g("gyro_z"));
+            case 2: return v3(g("mag_x"), g("mag_y"), g("mag_z"));
+            case 9: return v3(g("gravity_x"), g("gravity_y"), g("gravity_z"));
+            case 10: return v3(g("linear_accel_x"), g("linear_accel_y"), g("linear_accel_z"));
+            case 5: return new float[]{g("light")};
+            case 8: return new float[]{g("proximity")};
+            case 6: return new float[]{g("pressure")};
+            case 12: return new float[]{g("humidity")};
+            case 13: return new float[]{g("temperature")};
+            default: return new float[]{0};
+        }
+    }
+
+    private float g(String key) {
+        return staticValues.containsKey(key) ? staticValues.get(key) : getDefaultValue(key);
+    }
+
+    private void updateDynamicDisplay() {
         LinearLayout container = findViewById(R.id.values_container);
         int idx = 0;
         for (String t : types.split(",")) {
@@ -286,7 +514,6 @@ public class SimulationActivity extends AppCompatActivity {
         getSharedPreferences("fake_sensor_config", MODE_PRIVATE).edit()
             .putBoolean("enabled", false).putBoolean("simulate", false).apply();
 
-        // 覆写为禁用配置而非 rm，确保 su 不可用时的旧文件也被覆盖
         writeConfigViaSu("enabled=false|simulate=false|scenario=walking|types=");
     }
 

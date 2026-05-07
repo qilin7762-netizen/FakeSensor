@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         String types = collectCheckedTypes();
         if (types == null) return;
 
-        // 读取每个已勾选传感器的输入值
         Map<String, Float> values = new LinkedHashMap<>();
         for (SensorEntry e : sensorEntries) {
             CheckBox cb = findViewById(e.cbId);
@@ -198,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // 保存到 SharedPreferences
         SharedPreferences prefs = getSharedPreferences("fake_sensor_config", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit()
             .putBoolean("enabled", true)
@@ -225,8 +223,13 @@ public class MainActivity extends AppCompatActivity {
             p.waitFor();
         } catch (Exception ignored) {}
 
-        android.widget.Toast.makeText(this,
-                getString(R.string.toast_static_saved),
-                android.widget.Toast.LENGTH_SHORT).show();
+        // 启动静态模拟界面
+        Intent intent = new Intent(this, SimulationActivity.class);
+        intent.putExtra("types", types);
+        intent.putExtra("is_static", true);
+        for (Map.Entry<String, Float> e : values.entrySet()) {
+            intent.putExtra(e.getKey(), e.getValue());
+        }
+        startActivity(intent);
     }
 }
