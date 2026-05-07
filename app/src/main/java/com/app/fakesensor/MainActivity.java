@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -96,6 +97,68 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("types", types);
             startActivity(intent);
         });
+
+        runStatusChecks();
+    }
+
+    private void runStatusChecks() {
+        new Thread(() -> {
+            boolean rootOk = checkRoot();
+            boolean lspOk = checkLsposed();
+            runOnUiThread(() -> updateStatusUI(rootOk, lspOk));
+        }).start();
+    }
+
+    private boolean checkRoot() {
+        try {
+            Process p = Runtime.getRuntime().exec(
+                    new String[]{"su", "-c", "echo fakesensor_root_ok"});
+            java.io.BufferedReader r = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(p.getInputStream(), "UTF-8"));
+            String line = r.readLine();
+            r.close();
+            p.waitFor();
+            return line != null && line.contains("fakesensor_root_ok");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean checkLsposed() {
+        try {
+            // 检查 LSPosed 框架目录是否存在
+            Process p = Runtime.getRuntime().exec(
+                    new String[]{"su", "-c", "test -d /data/adb/lspd && echo lsp_ok || echo lsp_no"});
+            java.io.BufferedReader r = new java.io.BufferedReader(
+                    new java.io.InputStreamReader(p.getInputStream(), "UTF-8"));
+            String line = r.readLine();
+            r.close();
+            p.waitFor();
+            return line != null && line.contains("lsp_ok");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private void updateStatusUI(boolean rootOk, boolean lspOk) {
+        TextView tvRoot = findViewById(R.id.tv_root_status);
+        TextView tvLsp = findViewById(R.id.tv_lsposed_status);
+
+        if (rootOk) {
+            tvRoot.setText(R.string.status_root_ok);
+            tvRoot.setTextColor(0xFF4CAF50);
+        } else {
+            tvRoot.setText(R.string.status_root_fail);
+            tvRoot.setTextColor(0xFFF44336);
+        }
+
+        if (lspOk) {
+            tvLsp.setText(R.string.status_lsp_ok);
+            tvLsp.setTextColor(0xFF4CAF50);
+        } else {
+            tvLsp.setText(R.string.status_lsp_fail);
+            tvLsp.setTextColor(0xFFF44336);
+        }
     }
 
     private String collectCheckedTypes() {

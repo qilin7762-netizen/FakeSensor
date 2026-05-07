@@ -63,6 +63,13 @@
     <string name="sensor_short_step_detector">步数检测</string>
     <string name="sensor_unknown">传感器 %d</string>
 
+    <!-- Status -->
+    <string name="status_root_ok">✓ 可用</string>
+    <string name="status_root_fail">✗ 不可用 — 请授予 Root 权限</string>
+    <string name="status_lsp_ok">✓ 框架已安装</string>
+    <string name="status_lsp_fail">✗ 未检测到 — 请在 LSPosed 管理器中启用本模块</string>
+    <string name="status_checking">检测中…</string>
+
     <!-- Toasts -->
     <string name="toast_select_sensor">请至少勾选一个传感器</string>
 

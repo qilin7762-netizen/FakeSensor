@@ -64,6 +64,13 @@
     <string name="sensor_short_step_detector">Step Detector</string>
     <string name="sensor_unknown">Sensor %d</string>
 
+    <!-- Status -->
+    <string name="status_root_ok">✓ Available</string>
+    <string name="status_root_fail">✗ Unavailable — Grant root permission</string>
+    <string name="status_lsp_ok">✓ Framework installed</string>
+    <string name="status_lsp_fail">✗ Not detected — Enable module in LSPosed Manager</string>
+    <string name="status_checking">Checking…</string>
+
     <!-- Toasts -->
     <string name="toast_select_sensor">Please select at least one sensor</string>
 </resources>
