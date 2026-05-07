@@ -320,18 +320,8 @@ public class SimulationActivity extends AppCompatActivity {
     }
 
     private void updateStaticDisplay() {
-        LinearLayout container = findViewById(R.id.values_container);
-        int idx = 0;
-        for (String t : types.split(",")) {
-            int type = Integer.parseInt(t.trim());
-            float[] vals = getStaticValues(type);
-            int valIdx = idx * 2 + 1;
-            if (valIdx < container.getChildCount()) {
-                TextView tv = (TextView) container.getChildAt(valIdx);
-                if (tv != null) tv.setText(formatValues(vals));
-            }
-            idx++;
-        }
+        // 静态模式下 SeekBar 实时显示值，不需要额外刷新 display
+        // 仅在滑块拖动时 updateSliderValueLabel 已更新，无需定时刷新
     }
 
     private float[] getStaticValues(int type) {
