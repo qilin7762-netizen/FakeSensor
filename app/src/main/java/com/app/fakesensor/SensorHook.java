@@ -83,6 +83,7 @@ public class SensorHook {
                 XposedBridge.hookMethod(m, new SensorListenerHook());
                 hooked++;
             }
+            XposedBridge.log("[FakeSensor] Hooked " + hooked + " registerListenerImpl methods");
         } catch (Throwable t) {
             XposedBridge.log("[FakeSensor] Hook error: " + t.getMessage());
         }
@@ -97,6 +98,8 @@ public class SensorHook {
             if (!enabled) return;
             Sensor sensor = (Sensor) param.args[1];
             if (!shouldFake(sensor.getType())) return;
+            XposedBridge.log("[FakeSensor] Wrapping listener type=" + sensor.getType()
+                    + " name=" + sensor.getName());
             param.args[0] = new FakeSensorEventListener((SensorEventListener) param.args[0], sensor);
         }
     }
