@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             String line = r.readLine();
             r.close();
             p.waitFor();
+            p.destroy();
             return line != null && line.contains("fakesensor_root_ok");
         } catch (Exception e) {
             return false;
@@ -198,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
             os.write(content.getBytes("UTF-8"));
             os.close();
             p.waitFor();
+            p.destroy();
         } catch (Exception ignored) {}
 
         // 启动静态模拟界面

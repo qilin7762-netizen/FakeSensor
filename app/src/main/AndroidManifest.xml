@@ -24,7 +24,7 @@
         <provider
             android:name=".ConfigProvider"
             android:authorities="com.app.fakesensor.config"
-            android:exported="true" />
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"

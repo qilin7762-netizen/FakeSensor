@@ -36,6 +36,8 @@ public class SensorHook {
     private static volatile boolean stepTimerStarted;
     private static final java.util.List<FakeSensorEventListener> stepListeners
             = new java.util.ArrayList<>();
+    private static final java.util.Map<SensorEventListener, FakeSensorEventListener> listenerMap
+            = new java.util.HashMap<>();
 
     private static synchronized void ensureStepTimer() {
         if (stepTimerStarted) return;
@@ -65,6 +67,13 @@ public class SensorHook {
         }, 1000);
     }
 
+    private static synchronized void stopStepTimer() {
+        if (!stepTimerStarted || stepTimer == null) return;
+        stepTimer.quit();
+        stepTimer = null;
+        stepTimerStarted = false;
+    }
+
     // ===== 入口 =====
 
     public static void init() { reloadConfig(); }
@@ -75,13 +84,17 @@ public class SensorHook {
             Class<?> clz = XposedHelpers.findClass("android.hardware.SystemSensorManager", cl);
             int hooked = 0;
             for (java.lang.reflect.Method m : clz.getDeclaredMethods()) {
-                if (!m.getName().equals("registerListenerImpl")) continue;
                 Class<?>[] params = m.getParameterTypes();
                 if (params.length < 3) continue;
                 if (!SensorEventListener.class.isAssignableFrom(params[0])) continue;
                 if (!Sensor.class.isAssignableFrom(params[1])) continue;
-                XposedBridge.hookMethod(m, new SensorListenerHook());
-                hooked++;
+
+                if (m.getName().equals("registerListenerImpl")) {
+                    XposedBridge.hookMethod(m, new SensorListenerHook());
+                    hooked++;
+                } else if (m.getName().equals("unregisterListenerImpl")) {
+                    XposedBridge.hookMethod(m, new SensorUnregisterHook());
+                }
             }
             XposedBridge.log("[FakeSensor] Hooked " + hooked + " registerListenerImpl methods");
         } catch (Throwable t) {
@@ -100,7 +113,22 @@ public class SensorHook {
             if (!shouldFake(sensor.getType())) return;
             XposedBridge.log("[FakeSensor] Wrapping listener type=" + sensor.getType()
                     + " name=" + sensor.getName());
-            param.args[0] = new FakeSensorEventListener((SensorEventListener) param.args[0], sensor);
+            SensorEventListener original = (SensorEventListener) param.args[0];
+            FakeSensorEventListener fake = new FakeSensorEventListener(original, sensor);
+            listenerMap.put(original, fake);
+            param.args[0] = fake;
+        }
+    }
+
+    private static class SensorUnregisterHook extends XC_MethodHook {
+        @Override
+        protected void beforeHookedMethod(MethodHookParam param) {
+            SensorEventListener listener = (SensorEventListener) param.args[0];
+            FakeSensorEventListener fake = listenerMap.remove(listener);
+            if (fake != null) {
+                fake.unregister();
+                param.args[0] = fake;
+            }
         }
     }
 
@@ -188,7 +216,9 @@ public class SensorHook {
                 sb.append("|").append(e.getKey()).append("=").append(e.getValue());
             Process p = Runtime.getRuntime().exec(new String[]{"su", "-c", "cat > /data/local/tmp/fake_sensor_config.txt"});
             p.getOutputStream().write(sb.toString().getBytes("UTF-8"));
-            p.getOutputStream().close(); p.waitFor();
+            p.getOutputStream().close();
+            p.waitFor();
+            p.destroy();
         } catch (Exception ignored) {}
     }
 
@@ -323,6 +353,15 @@ public class SensorHook {
             if (sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
                 synchronized (stepListeners) { stepListeners.add(this); }
                 ensureStepTimer();
+            }
+        }
+
+        void unregister() {
+            if (sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+                synchronized (stepListeners) {
+                    stepListeners.remove(this);
+                    if (stepListeners.isEmpty()) stopStepTimer();
+                }
             }
         }
 

@@ -33,6 +33,14 @@ public class SimulationActivity extends AppCompatActivity {
     private final Map<String, SeekBar> seekBars = new LinkedHashMap<>();
     private final Map<String, float[]> sensorRanges = new LinkedHashMap<>();
 
+    private int parseSensorType(String t) {
+        try {
+            return Integer.parseInt(t.trim());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     private final Runnable tick = new Runnable() {
         @Override public void run() {
             updateDisplay();
@@ -58,7 +66,8 @@ public class SimulationActivity extends AppCompatActivity {
         // 读取静态模式的初始值
         if (isStatic) {
             for (String t : types.split(",")) {
-                int type = Integer.parseInt(t.trim());
+                int type = parseSensorType(t);
+                if (type < 0) continue;
                 for (String key : getKeysForType(type)) {
                     if (getIntent().hasExtra(key)) {
                         staticValues.put(key, getIntent().getFloatExtra(key, 0f));
@@ -103,7 +112,8 @@ public class SimulationActivity extends AppCompatActivity {
         LinearLayout container = findViewById(R.id.values_container);
 
         for (String t : types.split(",")) {
-            int type = Integer.parseInt(t.trim());
+            int type = parseSensorType(t);
+            if (type < 0) continue;
             String[] keys = getKeysForType(type);
 
             TextView title = new TextView(this);
@@ -185,6 +195,7 @@ public class SimulationActivity extends AppCompatActivity {
             os.write(content.getBytes("UTF-8"));
             os.close();
             p.waitFor();
+            p.destroy();
         } catch (Exception ignored) {}
     }
 
@@ -294,7 +305,8 @@ public class SimulationActivity extends AppCompatActivity {
     private void setupDisplay() {
         LinearLayout container = findViewById(R.id.values_container);
         for (String t : types.split(",")) {
-            int type = Integer.parseInt(t.trim());
+            int type = parseSensorType(t);
+            if (type < 0) continue;
             TextView title = new TextView(this);
             title.setText(sensorName(type));
             title.setTextSize(14);
@@ -348,7 +360,8 @@ public class SimulationActivity extends AppCompatActivity {
         LinearLayout container = findViewById(R.id.values_container);
         int idx = 0;
         for (String t : types.split(",")) {
-            int type = Integer.parseInt(t.trim());
+            int type = parseSensorType(t);
+            if (type < 0) continue;
             float[] vals = generateValues(type);
             int valIdx = idx * 2 + 1;
             if (valIdx < container.getChildCount()) {
@@ -515,6 +528,7 @@ public class SimulationActivity extends AppCompatActivity {
             os.write(content.getBytes("UTF-8"));
             os.close();
             p.waitFor();
+            p.destroy();
         } catch (Exception ignored) {}
     }
 }
